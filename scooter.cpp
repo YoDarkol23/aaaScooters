@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 using namespace std;
-using namespace ScooterRental;
+using namespace Aaa;
 
 string Scooter::model() {
     return _model;
@@ -12,48 +12,48 @@ string Scooter::color() {
     return _color;
 }
 
-int Scooter::pricePerHour() {
-    return _pricePerHour;
+int Scooter::priceHour() {
+    return _priceHour;
 }
 
-Scooter::Scooter(string model, string color, int pricePerHour) : _model(model), _color(color), _pricePerHour(pricePerHour) {}
+Scooter::Scooter(string model, string color, int priceHour) : _model(model), _color(color), _priceHour(priceHour) {}
 
-ostream& ScooterRental::operator << (ostream & out, const Scooter& s) {
-    out << s._model << " " << s._color << " " << s._pricePerHour << endl;
+ostream& Aaa::operator << (ostream& out, const Scooter& s) {
+    out << s._model << " " << s._color << " " << s._priceHour << endl;
     return out;
 }
 
-istream& ScooterRental::operator >> (istream & in, Scooter& s) {
-    in >> s._model >> s._color >> s._pricePerHour;
+istream& Aaa::operator >> (istream& in, Scooter& s) {
+    in >> s._model >> s._color >> s._priceHour;
     return in;
 }
 
-Scooter* ScooterRental::load(int & count) {
+Scooter* Aaa::load(int& count) {
     ifstream in("scooters.txt");
     if (!in.is_open())
         return nullptr;
     in >> count;
     if (count < 1)
         return nullptr;
-    Scooter *arr = new Scooter[count];
+    Scooter* arr = new Scooter[count];
     for (int i = 0; i < count; i++)
         in >> arr[i];
     in.close();
     return arr;
 }
 
-Scooter* ScooterRental::create(int & count) {
+Scooter* Aaa::create(int& count) {
     count = 5;
     Scooter* arr = new Scooter[count];
-    arr[0] = { "Scooter1", "Red", 10 };
-    arr[1] = { "Scooter2", "Blue", 15 };
-    arr[2] = { "Scooter3", "Green", 12 };
-    arr[3] = { "Scooter4", "Yellow", 20 };
-    arr[4] = { "Scooter5", "Black", 25 };
+    arr[0] = { "Nimbus2001", "Red", 10 };
+    arr[1] = { "Nimbus2002", "Blue", 15 };
+    arr[2] = { "Nimbus2003", "Gold", 12 };
+    arr[3] = { "Nimbus2004", "Silver", 20 };
+    arr[4] = { "Nimbus2005", "Black", 25 };
     return arr;
 }
 
-void ScooterRental::save(Scooter *arr, int count) {
+void Aaa::save(Scooter* arr, int count) {
     ofstream out("scooters.txt");
     out << count << endl;
     for (int i = 0; i < count; i++) {
@@ -62,10 +62,10 @@ void ScooterRental::save(Scooter *arr, int count) {
     out.close();
 }
 
-void ScooterRental::add(Scooter** arr, int* count) {
+void Aaa::add(Scooter** arr, int* count) {
     Scooter* temp = new (nothrow) Scooter[*count + 1];
     if (temp == nullptr) {
-        cout << "Error: Unable to allocate memory" << endl;
+        cout << "Error: oshibka" << endl;
         return;
     }
     for (int i = 0; i < *count; i++) {
@@ -74,23 +74,23 @@ void ScooterRental::add(Scooter** arr, int* count) {
     string model;
     string color;
     int price;
-    cout << "Enter scooter model: " << endl;
+    cout << "Enter model: " << endl;
     cin >> model;
-    cout << "Enter scooter color: " << endl;
+    cout << "Ente color: " << endl;
     cin >> color;
-    cout << "Enter price per hour: " << endl;
+    cout << "Enter price: " << endl;
     cin >> price;
     temp[*count].setModel(model);
     temp[*count].setColor(color);
-    temp[*count].setPricePerHour(price);
+    temp[*count].setPriceHour(price);
     delete[] * arr;
     *arr = temp;
     (*count)++;
 }
 
-void ScooterRental::del(Scooter *arr, int *count) {
+void Aaa::del(Scooter* arr, int* count) {
     int n = 0;
-    cout << "Enter the number of the scooter: " << endl;
+    cout << "Enter the number: " << endl;
     cin >> n;
     if (n < 1 || n > *count) {
         cout << "Not found" << endl;
@@ -103,9 +103,9 @@ void ScooterRental::del(Scooter *arr, int *count) {
     (*count)--;
 }
 
-void ScooterRental::edit(Scooter *arr, int count) {
+void Aaa::edit(Scooter* arr, int count) {
     int n = 0;
-    cout << "Enter the number of the scooter: " << endl;
+    cout << "Enter the number: " << endl;
     cin >> n;
     if (n < 1 || n > count) {
         cout << "Not found" << endl;
@@ -119,7 +119,34 @@ void ScooterRental::edit(Scooter *arr, int count) {
     cin >> temp;
     arr[n - 1].setColor(temp);
     int price = 0;
-    cout << "New price per hour: " << endl;
+    cout << "New price: " << endl;
     cin >> price;
-    arr[n - 1].setPricePerHour(price);
+    arr[n - 1].setPriceHour(price);
+}
+
+void Aaa::search(Scooter* arr, int count) {
+    string model, color;
+    cout << "Enter model: ";
+    cin >> model;
+    cout << "Enter color: ";
+    cin >> color;
+
+    bool found = false;
+    for (int i = 0; i < count; i++) {
+        if (arr[i].model() == model && arr[i].color() == color) {
+            cout << "Scooter found!" << endl;
+            cout << arr[i] << endl;
+            found = true;
+            break; 
+        }
+    }
+    if (!found) {
+        cout << "Not found!" << endl;
+    }
+}
+void Aaa::show(Scooter* arr, int count) {
+    cout << "List of scooters:" << endl;
+    for (int i = 0; i < count; i++) {
+        cout << i + 1 << ". " << arr[i] << endl;
+    }
 }
