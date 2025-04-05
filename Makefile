@@ -1,16 +1,5 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-
-all: program
-
-program: baza.o Scooters.o
-	$(CC) $(CFLAGS) -o program baza.o Scooters.o
-
-main.o: baza.c Scooters.h
-	$(CC) $(CFLAGS) -c baza.c
-
-database.o: Scooters.c Scooters.h
-	$(CC) $(CFLAGS) -c Scooters.c
-
+all:
+	g++ scooter.cpp main.cpp -o samokat
+	./samokat
 clean:
-	rm -f *.o program
+	rm -f samokat
